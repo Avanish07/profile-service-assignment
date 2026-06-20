@@ -1,0 +1,18 @@
+# Python virtualenv and cache
+.venv/
+__pycache__/
+*.pyc
+
+# Env files and local database (secrets / local state)
+.env
+*.db
+
+# Git and Mac junk
+.git/
+.DS_Store
+
+# Not needed inside the image
+docs/
+tests/
+*.pdf
+*.zip
