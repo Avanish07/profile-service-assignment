@@ -27,7 +27,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ghcr.io/avanish07/profile-service-assignment:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

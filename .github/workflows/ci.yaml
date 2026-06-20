@@ -35,14 +35,14 @@ jobs:
           tags: profile-service:ci
           load: true
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@master
         with:
           image-ref: profile-service:ci
           format: table
           exit-code: 1
           ignore-unfixed: true
           severity: CRITICAL,HIGH
-          
+
   helm-validate:
     runs-on: ubuntu-latest
     steps:

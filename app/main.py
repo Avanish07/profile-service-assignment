@@ -8,7 +8,13 @@ from sqlalchemy.orm import Session
 
 from app.config import get_settings
 from app.db import Base, db_ready, engine, get_db
-from app.repository import create_profile, delete_profile, get_profile, list_profiles, update_profile
+from app.repository import (
+    create_profile,
+    delete_profile,
+    get_profile,
+    list_profiles,
+    update_profile,
+)
 from app.schemas import ProfileCreate, ProfileRead, ProfileUpdate
 
 settings = get_settings()
@@ -61,7 +67,9 @@ def healthz() -> dict[str, str]:
 @app.get("/readyz")
 def readyz() -> dict[str, str]:
     if not db_ready():
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="database not ready")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="database not ready"
+        )
     return {"status": "ready"}
 
 
@@ -81,7 +89,9 @@ def create(payload: ProfileCreate, db: Session = Depends(get_db)):
         return create_profile(db, payload)
     except IntegrityError as exc:
         db.rollback()
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="profile already exists") from exc
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="profile already exists"
+        ) from exc
 
 
 @app.get("/profiles/{user_id}", response_model=ProfileRead)
