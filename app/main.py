@@ -17,6 +17,9 @@ from app.repository import (
 )
 from app.schemas import ProfileCreate, ProfileRead, ProfileUpdate
 
+
+# Pipeline test: end-to-end build → CI → CD → deploy walkthrough
+
 settings = get_settings()
 
 REQUEST_COUNT = Counter(
