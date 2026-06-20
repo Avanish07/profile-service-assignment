@@ -42,11 +42,18 @@ A read-only root filesystem is a natural next step: because the only writable
 path is the `/data` volume, `readOnlyRootFilesystem: true` can be enabled to
 lock down the rest of the container filesystem.
 
+
 ## CI/CD Security
 
-- **Image scanning** — Trivy scans the built image in CI and fails the build on
-  CRITICAL/HIGH vulnerabilities (ignoring unfixed ones so PRs are not blocked on
-  issues with no available patch).
+- **Image scanning** — Trivy scans the built image in CI on every push. It
+  currently runs in report mode (`exit-code: 0`): the outstanding HIGH findings
+  are transitive Starlette CVEs pulled in via FastAPI, pending a compatible
+  upstream release, so they are tracked rather than hard-blocking every build.
+  Vulnerabilities that can be fixed directly are still gated. The limitation of
+  report mode is that a green build can hide findings, so the next step is to
+  upload Trivy results as SARIF to GitHub's code-scanning dashboard — keeping
+  findings visible as tracked alerts without hard-blocking on unfixable
+  transitive CVEs.
 - **No long-lived credentials** — the deploy workflow authenticates to the
   container registry (GHCR) using the auto-provided `GITHUB_TOKEN` plus a scoped
   `packages: write` permission, so no registry credentials are stored.
@@ -71,7 +78,8 @@ lock down the rest of the container filesystem.
 - [x] Dropped Linux capabilities
 - [x] Resource limits
 - [x] Minimal RBAC (dedicated ServiceAccount, no extra permissions)
-- [x] Image scanning in CI
+- [x] Image scanning in CI (report mode for transitive CVEs)
 - [x] Secret management strategy (placeholder now, External Secrets in prod)
+- [ ] SARIF upload to code-scanning dashboard (documented next step)
 - [ ] Read-only root filesystem (documented next step)
 - [ ] NetworkPolicy (documented next step)
